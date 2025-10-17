@@ -9,7 +9,7 @@ This project simulates an industrial AI vision pipeline for a scrap sorting syst
 
 ### Demo
 
-*[Insert a link to your 1-2 minute demo video here. You can upload it to YouTube (unlisted) or Google Drive and paste the shareable link.]*
+video is provided in the repo as demo.mp4
 
 ---
 
