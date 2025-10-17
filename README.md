@@ -1,8 +1,9 @@
+### **1. Final Project Structure**
 # Real-Time Scrap Classifier & Robotic Pick Simulation
 
 **Submission for the Computer Vision Engineer Intern Assignment.**
 
-This project simulates an industrial AI vision pipeline for a scrap sorting system. It uses a custom-trained YOLOv8 model to perform real-time detection and classification of various scrap materials from a live video stream. The final application is a web-based dashboard that displays the live feed, overlays detections, and shows real-time statistics.
+This project simulates an industrial AI vision pipeline for a scrap sorting system. It uses a custom-trained YOLOv8 model to perform real-time detection of various scrap materials. The final application is an interactive web dashboard built with Streamlit that provides a live webcam feed for detection and a feature to test single images.
 
 ---
 
@@ -12,58 +13,114 @@ This project simulates an industrial AI vision pipeline for a scrap sorting syst
 
 ---
 
+### Features
+
+* **Live Detection:** Uses a webcam to simulate a conveyor belt, performing real-time object detection and classification.
+* **Interactive Dashboard:** A user-friendly web interface that displays the live video, detection bounding boxes, and real-time statistics on detected items.
+* **Image Upload:** A sidebar option to upload a single image (`.jpg`, `.png`) to test the model's performance on static files. Sample images are provided in the `assets` folder.
+
+---
+
+### Project Structure
+
+```
+
+RealTime-Scrap-Classifier/
+│
+├── assets/             \# Contains sample images for testing
+│   ├── test\_can.jpg
+│   └── test\_bottle.jpg
+│
+├── src/
+│   └── app.py          \# The main Streamlit application script
+│
+├── Best.pt             \# The trained YOLOv8 model weights
+├── README.md           \# Project documentation
+└── requirements.txt    \# Required Python libraries
+
+````
+
+---
+
+### Setup and Installation
+
+Follow these steps to set up and run the project locally.
+
+#### **Prerequisites**
+* Python 3.8 or higher.
+* `pip` for package management.
+
+#### **1. Clone the Repository**
+```bash
+git clone [https://github.com/NeuralDataMind/RealTime-Scrap-Classifier]
+cd [RealTime-Scrap-Classifier]
+````
+
+#### **2. Set Up a Virtual Environment (Recommended)**
+
+```bash
+# For Windows
+python -m venv venv
+venv\Scripts\activate
+
+# For macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+#### **3. Install Dependencies**
+
+```bash
+pip install -r requirements.txt
+```
+
+#### **4. Place the Model File**
+
+Ensure that the trained model file, `Best.pt`, is placed in the root directory of the project, at the same level as the `src` folder.
+
+-----
+
 ### How to Run
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone [Your GitHub Repository URL]
-    cd [Your-Repo-Name]
-    ```
+Once the setup is complete, launch the Streamlit dashboard with this command from the project's root directory:
 
-2.  **Install Dependencies:**
-    It is recommended to use a Python virtual environment.
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+streamlit run src/app.py
+```
 
-3.  **Run the Dashboard:**
-    This command will launch the Streamlit web application.
-    ```bash
-    streamlit run src/app.py
-    ```
-    Your web browser should open a new tab with the dashboard. If not, navigate to the local URL provided in the terminal (usually `http://localhost:8501`).
+Your web browser should open a new tab with the dashboard. If not, navigate to the local URL provided in the terminal (usually `http://localhost:8501`).
 
----
+-----
 
-### My Approach
+### Troubleshooting
 
-My development process followed these key steps:
+  * **Error: `File does not exist: Best.pt`**
 
-1.  **Data Exploration & Analysis:** I began by researching public datasets for garbage and scrap detection. My initial analysis of a large dataset revealed a **severe class imbalance**, with over 70% of instances belonging to a single category. This would have resulted in a heavily biased and ineffective model.
+      * **Cause:** The script cannot find the model file.
+      * **Solution:** Make sure the `Best.pt` file is in the main project folder, not inside the `src` folder. The `app.py` script uses a relative path to find it.
 
-2.  **Strategic Data Curation:** Recognizing that model performance depends heavily on data quality, I made the decision to switch to a different dataset ("Garbage Detection – 6 Waste Categories" from Kaggle). This dataset, while still moderately imbalanced, provided a sufficient number of images for multiple key classes, creating a much better foundation for training.
+  * **Webcam Freezes or is Slow**
 
-3.  **Model Training:** I fine-tuned a lightweight **YOLOv8n** model on the selected dataset. Training was performed in Google Colab to leverage GPU acceleration, which significantly reduced the time required and allowed for more training epochs.
+      * **Cause:** Your computer's CPU is being overloaded by the model.
+      * **Solution:** The application already resizes the video frames to reduce the load. Ensure no other resource-intensive programs are running.
 
-4.  **Real-Time Simulation & Dashboard:** I developed the final application using **Streamlit**. The dashboard provides a user-friendly interface to view the live webcam feed, see the model's detections in real-time, and monitor live statistics on the types and counts of materials detected. It also includes a feature for testing the model on single uploaded images.
+-----
 
----
+### **Note on PDF Write-up**
 
-### Challenges Faced & Key Decisions
+The following sections ("My Approach" and "Challenges Faced") provide a summary for this README. These topics should be **expanded upon in much greater detail** in your separate PDF submission, as they demonstrate your engineering thought process.
 
-* **Challenge: Severe Class Imbalance:** The most significant challenge was the poor quality and severe class imbalance found in many public garbage datasets. My first attempt with a large, imbalanced dataset would have produced a model that was an expert at detecting one class and completely ignorant of others.
+#### My Approach
 
-* **Key Decision: Prioritizing Data Quality Over Quantity:** Instead of trying to force a flawed dataset to work, my key decision was to **switch to a different dataset** that was better balanced and more suitable for the task, even if it meant restarting the data preparation process. This decision was crucial for the final success of the model. This highlights the real-world principle that the quality of training data is often more important than the sheer quantity.
+I began by analyzing public garbage datasets, where I identified a severe class imbalance. Recognizing that data quality is paramount, I switched to a more suitable dataset ("Garbage Detection – 6 Waste Categories") to train a lightweight YOLOv8n model. The final application was built with Streamlit to provide an interactive dashboard for real-time detection and statistical tracking.
 
-* **Challenge: Real-time Performance:** The initial version of the Streamlit dashboard froze frequently because the YOLOv8 model was too resource-intensive for the live video thread. I resolved this by resizing the video frames before processing and implementing a thread-safe queue to decouple the video rendering from the model inference, resulting in a smooth user experience.
+#### Challenges Faced & Key Decisions
 
----
+  * **Challenge:** The primary challenge was the **severe class imbalance** in initial datasets, which would have produced a biased model.
+  * **Key Decision:** My most critical decision was to **prioritize data quality over quantity** by switching to a better-balanced dataset. This was essential for the final model's success.
+  * **Challenge:** The live dashboard initially froze due to performance bottlenecks. I resolved this by implementing a **thread-safe queue** to decouple video rendering from model inference, ensuring a smooth user experience.
 
-### Libraries Used
+<!-- end list -->
 
-* `ultralytics` (for YOLOv8)
-* `streamlit`
-* `opencv-python`
-* `streamlit-webrtc`
-* `av`
-* `numpy`
+```
+```
