@@ -18,6 +18,7 @@ This project simulates an industrial AI vision pipeline for a scrap sorting syst
 * **Live Detection:** Uses a webcam to simulate a conveyor belt, performing real-time object detection and classification.
 * **Interactive Dashboard:** A user-friendly web interface that displays the live video, detection bounding boxes, and real-time statistics on detected items.
 * **Image Upload:** A sidebar option to upload a single image (`.jpg`, `.png`) to test the model's performance on static files. Sample images are provided in the `assets` folder.
+* It can detect Plastic, metal, Biodegradable, cardboard, glass, paper
 
 ---
 
